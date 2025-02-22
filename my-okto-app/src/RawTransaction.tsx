@@ -10,7 +10,7 @@ export  const RawTransaction = () =>  {
     const [inputValue, setInputValue] = useState<number>();
       const [transactionResult, setTransactionResult] = useState<string | null>(null);
       const [newsContent, setNewsContent] = useState<string>("");
-      const [comment, setComment] = useState<string>("");
+      
       const [newsId, setNewsId] = useState<string>("");
       const oktoClient = useOkto();
 
