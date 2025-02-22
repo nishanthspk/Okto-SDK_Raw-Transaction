@@ -7,12 +7,9 @@ import { encodeFunctionData } from 'viem';
       
 export  const RawTransaction = () =>  {
 
-  
-     
-      const [newsContent, setNewsContent] = useState<string>("");
-      
-      const [newsId, setNewsId] = useState<string>("");
-      const oktoClient = useOkto();
+  const [newsContent, setNewsContent] = useState<string>("");
+  const [newsId, setNewsId] = useState<string>("");
+  const oktoClient = useOkto();
 
 const postNews = async () => { 
 
