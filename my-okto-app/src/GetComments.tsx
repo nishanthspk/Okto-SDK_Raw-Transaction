@@ -90,8 +90,11 @@ const result = await evmRawTransaction(oktoClient, rawTxParams);
 
 <div className="mt-4">
               
-<button onClick={getNews}className="w-full my-4 py-3 px-4 bg-gradient-to-r from-blue-300 to-blue-600 text-white rounded-full hover:from-gray-300 hover:to-gray-500 transition mb-2 font-bold shadow-md">
-                Get News
+<button
+                onClick={getComments}
+                className="w-full my-4 py-3 px-4 bg-gradient-to-r from-blue-300 to-blue-600 text-white rounded-full hover:from-blue-500 hover:to-blue-700 transition mb-2 font-bold shadow-md"
+              >
+                Get Comments
               </button>
             </div>
      );
