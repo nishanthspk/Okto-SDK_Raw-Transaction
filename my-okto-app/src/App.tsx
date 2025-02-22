@@ -4,7 +4,10 @@ import { useOkto,evmRawTransaction } from "@okto_web3/react-sdk";
 import { GoogleLogin } from "@react-oauth/google";
 import { UserDashboard } from "./UserDashboard";
 import { TokenTransfer } from "./TokenTransfer";
-import { encodeFunctionData } from "viem";
+
+import RawTransaction from './RawTransaction';
+import AddComment from './AddComment';
+import GetNews from './GetNews';
 
 
 declare global {
@@ -13,7 +16,6 @@ declare global {
   }
 }
 
-const CONTRACT_ADDRESS = "0xeb0A42C64417114aDbb74f454110452eb0F3292e";
 
 const App = () => {
   const oktoClient = useOkto();
@@ -36,6 +38,273 @@ const App = () => {
       console.error("Authentication error:", error);
     }
   }
+
+  const CONTRACT_ADDRESS = "0xeb0A42C64417114aDbb74f454110452eb0F3292e";
+
+const contractABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_newsId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_content",
+				"type": "string"
+			}
+		],
+		"name": "addComment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "newsId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "commenter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "content",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"name": "CommentAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "author",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "content",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"name": "NewsPosted",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_content",
+				"type": "string"
+			}
+		],
+		"name": "postNews",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "comments",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "newsId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "commenter",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "content",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_newsId",
+				"type": "uint256"
+			}
+		],
+		"name": "getComments",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "newsId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "commenter",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "content",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct TwitterNews.Comment[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getNews",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "author",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "content",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct TwitterNews.NewsPost",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "newsCounter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "newsPosts",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "author",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "content",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
 
   const connectWallet = async () => {
     try {
@@ -60,1201 +329,10 @@ const App = () => {
   };
 
 
-   
-    
-      const postNews = async () => {
-        const oktoClient = useOkto();
-        try {
-          const contractAddress = "0xeb0A42C64417114aDbb74f454110452eb0F3292e";
-          const functionName = "postNews";
-          const functionArgs = [20];
-    
-          const functionData = encodeFunctionData({
-            abi: [
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                  }
-                ],
-                "name": "addComment",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-              },
-              {
-                "anonymous": false,
-                "inputs": [
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "commenter",
-                    "type": "address"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "CommentAdded",
-                "type": "event"
-              },
-              {
-                "anonymous": false,
-                "inputs": [
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                  },
-                  {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "NewsPosted",
-                "type": "event"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                  }
-                ],
-                "name": "postNews",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "comments",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "commenter",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_newsId",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "getComments",
-                "outputs": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint256",
-                        "name": "newsId",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "commenter",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "content",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct TwitterNews.Comment[]",
-                    "name": "",
-                    "type": "tuple[]"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_id",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "getNews",
-                "outputs": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "author",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "content",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct TwitterNews.NewsPost",
-                    "name": "",
-                    "type": "tuple"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [],
-                "name": "newsCounter",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "newsPosts",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              }
-            ]as const,
-            functionName,
-            args: functionArgs,
-          });
-    
-          const rawTxParams = {
-            networkId: "eip155:84537", // Change to Polygon Amoy networkId if needed
-            transaction: {
-              to: contractAddress,
-              data: functionData,
-            },
-          };
-    
-          const result = await evmRawTransaction(oktoClient, {
-            networkId: "eip155:84537", // Change to Polygon Amoy networkId if needed
-            transaction: {
-              to: contractAddress,
-              data: functionData,
-            },
-          });
-          console.log("Transaction successful", result);
-        } catch (error) {
-          console.error("Transaction failed", error);
-        }
-      };
-    
-      const getNews = async () => {
-        const oktoClient = useOkto();
-        try {
-          const contractAddress = "0xeb0A42C64417114aDbb74f454110452eb0F3292e";
-          const functionName = "getNews";
-          const functionArgs = [30];
-    
-          const functionData = encodeFunctionData({
-            abi: [
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                  }
-                ],
-                "name": "addComment",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-              },
-              {
-                "anonymous": false,
-                "inputs": [
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "commenter",
-                    "type": "address"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "CommentAdded",
-                "type": "event"
-              },
-              {
-                "anonymous": false,
-                "inputs": [
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                  },
-                  {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "NewsPosted",
-                "type": "event"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                  }
-                ],
-                "name": "postNews",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "comments",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "commenter",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_newsId",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "getComments",
-                "outputs": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint256",
-                        "name": "newsId",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "commenter",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "content",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct TwitterNews.Comment[]",
-                    "name": "",
-                    "type": "tuple[]"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_id",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "getNews",
-                "outputs": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "author",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "content",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct TwitterNews.NewsPost",
-                    "name": "",
-                    "type": "tuple"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [],
-                "name": "newsCounter",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "newsPosts",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              }
-            ]as const,
-            functionName,
-            args: functionArgs,
-          });
-    
-          const rawTxParams = {
-            networkId: "eip155:84537", // Change to Polygon Amoy networkId if needed
-            transaction: {
-              to: contractAddress,
-              data: functionData,
-            },
-          };
-    
-          const result = await evmRawTransaction(oktoClient, {
-            networkId: "eip155:84537", // Change to Polygon Amoy networkId if needed
-            transaction: {
-              to: contractAddress,
-              data: functionData,
-            },
-          });
-          console.log("Transaction successful", result);
-        } catch (error) {
-          console.error("Transaction failed", error);
-        }
-      };
-    
-    
-      const getComments = async () => {
-        const oktoClient = useOkto();
-        try {
-          const contractAddress = "0xeb0A42C64417114aDbb74f454110452eb0F3292e";
-          const functionName = "getComments";
-          const functionArgs = [35];
-    
-          const functionData = encodeFunctionData({
-            abi: [
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                  }
-                ],
-                "name": "addComment",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-              },
-              {
-                "anonymous": false,
-                "inputs": [
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "commenter",
-                    "type": "address"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "CommentAdded",
-                "type": "event"
-              },
-              {
-                "anonymous": false,
-                "inputs": [
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                  },
-                  {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "NewsPosted",
-                "type": "event"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                  }
-                ],
-                "name": "postNews",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "comments",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "commenter",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_newsId",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "getComments",
-                "outputs": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint256",
-                        "name": "newsId",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "commenter",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "content",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct TwitterNews.Comment[]",
-                    "name": "",
-                    "type": "tuple[]"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_id",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "getNews",
-                "outputs": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "author",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "content",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct TwitterNews.NewsPost",
-                    "name": "",
-                    "type": "tuple"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [],
-                "name": "newsCounter",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "newsPosts",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              }
-            ]as const,
-            functionName,
-            args: functionArgs,
-          });
-    
-          const rawTxParams = {
-            networkId: "eip155:84537", // Change to Polygon Amoy networkId if needed
-            transaction: {
-              to: contractAddress,
-              data: functionData,
-            },
-          };
-    
-          const result = await evmRawTransaction(oktoClient, {
-            networkId: "eip155:84537", // Change to Polygon Amoy networkId if needed
-            transaction: {
-              to: contractAddress,
-              data: functionData,
-            },
-          });
-          console.log("Transaction successful", result);
-        } catch (error) {
-          console.error("Transaction failed", error);
-        }
-      };
-    
-  
-
-      const postComment = async () => {
-        const oktoClient = useOkto();
-        try {
-          const contractAddress = "0xeb0A42C64417114aDbb74f454110452eb0F3292e";
-          const functionName = "postComment";
-          const functionArgs = [40];
-    
-          const functionData = encodeFunctionData({
-            abi: [
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                  }
-                ],
-                "name": "addComment",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-              },
-              {
-                "anonymous": false,
-                "inputs": [
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "commenter",
-                    "type": "address"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "CommentAdded",
-                "type": "event"
-              },
-              {
-                "anonymous": false,
-                "inputs": [
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                  },
-                  {
-                    "indexed": true,
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "NewsPosted",
-                "type": "event"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                  }
-                ],
-                "name": "postNews",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "comments",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "newsId",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "commenter",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_newsId",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "getComments",
-                "outputs": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint256",
-                        "name": "newsId",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "commenter",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "content",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct TwitterNews.Comment[]",
-                    "name": "",
-                    "type": "tuple[]"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "_id",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "getNews",
-                "outputs": [
-                  {
-                    "components": [
-                      {
-                        "internalType": "uint256",
-                        "name": "id",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "address",
-                        "name": "author",
-                        "type": "address"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "content",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "timestamp",
-                        "type": "uint256"
-                      }
-                    ],
-                    "internalType": "struct TwitterNews.NewsPost",
-                    "name": "",
-                    "type": "tuple"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [],
-                "name": "newsCounter",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              },
-              {
-                "inputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                  }
-                ],
-                "name": "newsPosts",
-                "outputs": [
-                  {
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "timestamp",
-                    "type": "uint256"
-                  }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-              }
-            ]as const,
-            functionName,
-            args: functionArgs,
-          });
-    
-          const rawTxParams = {
-            networkId: "eip155:84537", // Change to Polygon Amoy networkId if needed
-            transaction: {
-              to: contractAddress,
-              data: functionData,
-            },
-          };
-    
-          const result = await evmRawTransaction(oktoClient, {
-            networkId: "eip155:84537", // Change to Polygon Amoy networkId if needed
-            transaction: {
-              to: contractAddress,
-              data: functionData,
-            },
-          });
-          console.log("Transaction successful", result);
-        } catch (error) {
-          console.error("Transaction failed", error);
-        }
-      };
-
-    
-
-  
 
       return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-700 to-blue-200 p-6 text-black">
+          <h1 className="font-extrabold text-3xl">Raw Transaction</h1>
           <div className="flex justify-between items-center w-full">
             <div className="mr-[100px]">
               {oktoClient.userSWA ? (
@@ -1278,8 +356,8 @@ const App = () => {
             </div>
           </div>
       
-          <div className="bg-gradient-to-br from-white to-blue-100 shadow-xl rounded-xl p-10 w-full max-w-md border border-gray-300">
-            <div className="mt-4">
+          {/* <div className="bg-gradient-to-br from-white to-blue-100 shadow-xl rounded-xl p-10 w-full max-w-md border border-gray-300"> */}
+            {/* <div className="mt-4">
               <textarea
                 placeholder="What's happening?"
                 value={newsContent}
@@ -1290,11 +368,11 @@ const App = () => {
                 onClick={postNews}
                 className="mt-4 w-full py-3 px-4 bg-gradient-to-r from-blue-300 to-blue-600 text-white rounded-full hover:from-blue-600 hover:to-blue-800 transition font-bold shadow-md"
               >
-                Post
+                Post News
               </button>
-            </div>
+            </div> */}
       
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <input
                 type="text"
                 placeholder="Search News ID"
@@ -1320,9 +398,9 @@ const App = () => {
               >
                 Get Comments
               </button>
-            </div>
+            </div> */}
       
-            {newsPost && (
+            {/* {newsPost && (
               <div className="p-4 border border-gray-300 rounded-xl mt-2 bg-gradient-to-br from-white to-blue-100 shadow-md">
                 <p className="font-bold text-blue-700">News #{newsPost.id}</p>
                 <p>{newsPost.content}</p>
@@ -1340,14 +418,17 @@ const App = () => {
                   </div>
                 ))}
               </div>
-            )}
-          </div>
+            )} */}
+          {/* </div> */}
       
           <TokenTransfer />
+          <RawTransaction />
+          <AddComment />
+          <GetNews />
+		  
         </div>
       );
-      
-      
 };
 
 export default App;
+
