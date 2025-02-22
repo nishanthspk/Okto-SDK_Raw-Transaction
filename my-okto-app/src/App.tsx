@@ -8,6 +8,8 @@ import { TokenTransfer } from "./TokenTransfer";
 import RawTransaction from './RawTransaction';
 import AddComment from './AddComment';
 import GetNews from './GetNews';
+import GetComments from "./GetComments";
+
 
 
 declare global {
@@ -425,6 +427,7 @@ const contractABI = [
           <RawTransaction />
           <AddComment />
           <GetNews />
+          <GetComments />
 		  
         </div>
       );
