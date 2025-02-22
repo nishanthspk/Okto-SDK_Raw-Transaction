@@ -7,7 +7,7 @@ import { encodeFunctionData } from 'viem';
       
 export  const RawTransaction = () =>  {
 
-    const [inputValue, setInputValue] = useState<number>();
+  
      
       const [newsContent, setNewsContent] = useState<string>("");
       
