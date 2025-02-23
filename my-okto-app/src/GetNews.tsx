@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { encodeFunctionData } from 'viem';
 
 
-// RawTransaction component
+
 export default function GetNews({}) {
   const oktoClient = useOkto();
 
