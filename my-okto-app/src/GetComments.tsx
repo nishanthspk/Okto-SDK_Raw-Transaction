@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { encodeFunctionData } from 'viem';
 
 
+
 // RawTransaction component
 export default function GetComments({}) {
   const oktoClient = useOkto();
@@ -77,6 +78,9 @@ export default function GetComments({}) {
           to: contractAddress as '0x${string}',
           data: functionData,
         },};
+
+        console.log("Function Data:", functionData);
+        console.log("Raw Transaction Params:", rawTxParams);
 
 const result = await evmRawTransaction(oktoClient, rawTxParams);
     }

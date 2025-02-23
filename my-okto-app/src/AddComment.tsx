@@ -55,6 +55,9 @@ export default function addComments({}) {
           data: functionData,
         },};
 
+        console.log("Function Data:", functionData);
+        console.log("Raw Transaction Params:", rawTxParams);
+
 const result = await evmRawTransaction(oktoClient, rawTxParams);
     }
   catch (error) {
