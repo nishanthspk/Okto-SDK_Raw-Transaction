@@ -5,9 +5,7 @@ import { encodeFunctionData } from 'viem';
 
 export default function addComments({}) {
   const oktoClient = useOkto();
-
   const [comment, setComment] = useState<string>("");
-
 
   const addComment = async () => {
     try {
