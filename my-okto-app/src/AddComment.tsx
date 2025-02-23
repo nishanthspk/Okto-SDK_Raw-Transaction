@@ -6,7 +6,7 @@ import { encodeFunctionData } from 'viem';
 export default function addComments({}) {
   const oktoClient = useOkto();
 
-  // State to manage input value and transaction result
+ 
   const [inputValue, setInputValue] = useState<number>();
   const [transactionResult, setTransactionResult] = useState<string | null>(null);
   const [newsContent, setNewsContent] = useState<string>("");
