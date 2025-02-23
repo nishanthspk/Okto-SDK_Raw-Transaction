@@ -92,10 +92,6 @@ export const RawTransaction = () => {
     }
   };
 
-
-
-
-
   return (
     <div className="mt-4">
       <input
