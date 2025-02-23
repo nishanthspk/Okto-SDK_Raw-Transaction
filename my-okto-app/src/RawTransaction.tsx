@@ -20,7 +20,6 @@ export const RawTransaction = () => {
       const contractAddress = '0xeb0A42C64417114aDbb74f454110452eb0F3292e'; // Replace with actual contract address
       const functionName = 'postNews'; // Replace with actual function name
       const functionArgs = ["Hello"];
-
       const functionData = encodeFunctionData({
         abi: [
 
