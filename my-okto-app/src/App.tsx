@@ -353,26 +353,7 @@ const contractABI = [
       
             
       
-            {/* {newsPost && (
-              <div className="p-4 border border-gray-300 rounded-xl mt-2 bg-gradient-to-br from-white to-blue-100 shadow-md">
-                <p className="font-bold text-blue-700">News #{newsPost.id}</p>
-                <p>{newsPost.content}</p>
-                <p className="text-sm text-gray-500">By: {newsPost.author}</p>
-              </div>
-            )}
-      
-            {comments.length > 0 && (
-              <div className="p-4 border border-gray-300 rounded-xl mt-2 bg-gradient-to-br from-white to-blue-100 shadow-md">
-                <h3 className="font-bold text-blue-600">Comments:</h3>
-                {comments.map((c, index) => (
-                  <div key={index} className="border-b border-gray-400 p-2 last:border-none">
-                    <p>{c.content}</p>
-                    <p className="text-sm text-gray-500">By: {c.commenter}</p>
-                  </div>
-                ))}
-              </div>
-            )} */}
-          {/* </div> */}
+           
       
           <TokenTransfer />
           <RawTransaction />
