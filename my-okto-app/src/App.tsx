@@ -349,21 +349,7 @@ const contractABI = [
             </div>
           </div>
       
-          {/* <div className="bg-gradient-to-br from-white to-blue-100 shadow-xl rounded-xl p-10 w-full max-w-md border border-gray-300"> */}
-            {/* <div className="mt-4">
-              <textarea
-                placeholder="What's happening?"
-                value={newsContent}
-                onChange={(e) => setNewsContent(e.target.value)}
-                className="w-full p-3 bg-gradient-to-br from-blue-50 to-blue-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-500 shadow-md"
-              />
-              <button
-                onClick={postNews}
-                className="mt-4 w-full py-3 px-4 bg-gradient-to-r from-blue-300 to-blue-600 text-white rounded-full hover:from-blue-600 hover:to-blue-800 transition font-bold shadow-md"
-              >
-                Post News
-              </button>
-            </div> */}
+          
       
             {/* <div className="mt-4">
               <input
