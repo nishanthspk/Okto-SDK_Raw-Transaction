@@ -9,14 +9,13 @@ export default function GetNews({}) {
   const oktoClient = useOkto();
 
 
-  // Function to handle the transaction
+
   const getNews = async () => {
     try {
       // 1. Define Contract Interaction
       const contractAddress = '0xeb0A42C64417114aDbb74f454110452eb0F3292e'; // Replace with actual contract address
       const functionName = 'getNews'; // Replace with actual function name
       const functionArgs = [20]; // Pass input value as argument
-
 
       const functionData = encodeFunctionData({
         abi:[
