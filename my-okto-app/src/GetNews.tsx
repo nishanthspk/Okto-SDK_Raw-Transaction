@@ -3,8 +3,6 @@ import { evmRawTransaction, useOkto } from '@okto_web3/react-sdk';
 import { useState } from 'react';
 import { encodeFunctionData } from 'viem';
 
-
-
 export default function GetNews({ }) {
     const oktoClient = useOkto();
 
