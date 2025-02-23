@@ -8,7 +8,7 @@ export default function addComments({}) {
 
   const [comment, setComment] = useState<string>("");
 
-  // Function to handle the transaction
+
   const addComment = async () => {
     try {
       // 1. Define Contract Interaction
