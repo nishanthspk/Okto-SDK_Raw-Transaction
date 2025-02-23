@@ -17,7 +17,7 @@ export const RawTransaction = () => {
 
   const postNews = async () => {
     try {
-      const contractAddress = '0xeb0A42C64417114aDbb74f454110452eb0F3292e'; // Replace with actual contract address
+      const contractAddress = '0x02B139228Fe4CA03ca1E45df00aBD46D17450AFB'; // Replace with actual contract address
       const functionName = 'postNews'; // Replace with actual function name
       const functionArgs = ["Hello"];
       const functionData = encodeFunctionData({
@@ -36,6 +36,143 @@ export const RawTransaction = () => {
             "stateMutability": "nonpayable",
             "type": "function"
           },
+          {
+            "inputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ],
+            "name": "newsPosts",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "author",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "content",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bigint",
+                "type": "uint256"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "commenter",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "string",
+                "name": "content",
+                "type": "string"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+              }
+            ],
+            "name": "CommentAdded",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "author",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "string",
+                "name": "content",
+                "type": "string"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+              }
+            ],
+            "name": "NewsPosted",
+            "type": "event"
+          },
+          
+          {
+            "inputs": [
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+              }
+            ],
+            "name": "comments",
+            "outputs": [
+              {
+                "internalType": "uint256",
+                "name": "bigint",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address",
+                "name": "commenter",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "content",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+        
         ],
         functionName,
         args: functionArgs,

@@ -14,9 +14,9 @@ export default function GetComments({ }) {
     const getComments = async () => {
         try {
             // 1. Define Contract Interaction
-            const contractAddress = '0xeb0A42C64417114aDbb74f454110452eb0F3292e'; // Replace with actual contract address
+            const contractAddress = '0x02B139228Fe4CA03ca1E45df00aBD46D17450AFB'; // Replace with actual contract address
             const functionName = 'getComments'; // Replace with actual function name
-            const functionArgs = [20]; // Pass input value as argument
+            const functionArgs = [20,"world"]; // Pass input value as argument
 
 
             const functionData = encodeFunctionData({
@@ -25,7 +25,7 @@ export default function GetComments({ }) {
                         "inputs": [
                             {
                                 "internalType": "uint256",
-                                "name": "_newsId",
+                                "name": "_bigint",
                                 "type": "uint256"
                             }
                         ],
@@ -35,7 +35,7 @@ export default function GetComments({ }) {
                                 "components": [
                                     {
                                         "internalType": "uint256",
-                                        "name": "newsId",
+                                        "name": "bigint",
                                         "type": "uint256"
                                     },
                                     {
@@ -61,7 +61,146 @@ export default function GetComments({ }) {
                         ],
                         "stateMutability": "view",
                         "type": "function"
-                    },] as const,
+                    },
+                
+                    {
+                        "inputs": [
+                          {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "newsPosts",
+                        "outputs": [
+                          {
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                          },
+                          {
+                            "internalType": "address",
+                            "name": "author",
+                            "type": "address"
+                          },
+                          {
+                            "internalType": "string",
+                            "name": "content",
+                            "type": "string"
+                          },
+                          {
+                            "internalType": "uint256",
+                            "name": "timestamp",
+                            "type": "uint256"
+                          }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "bigint",
+                            "type": "uint256"
+                          },
+                          {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "commenter",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "content",
+                            "type": "string"
+                          },
+                          {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "timestamp",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "CommentAdded",
+                        "type": "event"
+                      },
+                      {
+                        "anonymous": false,
+                        "inputs": [
+                          {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "id",
+                            "type": "uint256"
+                          },
+                          {
+                            "indexed": true,
+                            "internalType": "address",
+                            "name": "author",
+                            "type": "address"
+                          },
+                          {
+                            "indexed": false,
+                            "internalType": "string",
+                            "name": "content",
+                            "type": "string"
+                          },
+                          {
+                            "indexed": false,
+                            "internalType": "uint256",
+                            "name": "timestamp",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "NewsPosted",
+                        "type": "event"
+                      },
+                      
+                      {
+                        "inputs": [
+                          {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                          },
+                          {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                          }
+                        ],
+                        "name": "comments",
+                        "outputs": [
+                          {
+                            "internalType": "uint256",
+                            "name": "bigint",
+                            "type": "uint256"
+                          },
+                          {
+                            "internalType": "address",
+                            "name": "commenter",
+                            "type": "address"
+                          },
+                          {
+                            "internalType": "string",
+                            "name": "content",
+                            "type": "string"
+                          },
+                          {
+                            "internalType": "uint256",
+                            "name": "timestamp",
+                            "type": "uint256"
+                          }
+                        ],
+                        "stateMutability": "view",
+                        "type": "function"
+                      },
+                
+                ] as const,
                 functionName,
                 args: functionArgs,
             });
@@ -86,6 +225,9 @@ export default function GetComments({ }) {
                     data: functionData,
                 },
             });
+            console.log('====================================');
+            console.log(result);
+            console.log('====================================');
         }
         catch (error) {
             console.error("Transaction error:", error);
