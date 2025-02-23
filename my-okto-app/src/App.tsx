@@ -33,8 +33,6 @@ const App = () => {
 	}
 
 	
-
-
 	const connectWallet = async () => {
 		try {
 			if (!window.ethereum) {
@@ -47,9 +45,7 @@ const App = () => {
 
 			const signer = await web3Provider.getSigner();
 			const userAddress = await signer.getAddress();
-			setAccount(userAddress);
-
-		
+			setAccount(userAddress);	
 		
 		} catch (error) {
 			console.error("Error connecting wallet:", error);
