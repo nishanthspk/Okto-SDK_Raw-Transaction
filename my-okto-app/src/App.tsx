@@ -4,13 +4,10 @@ import { useOkto,evmRawTransaction } from "@okto_web3/react-sdk";
 import { GoogleLogin } from "@react-oauth/google";
 import { UserDashboard } from "./UserDashboard";
 import { TokenTransfer } from "./TokenTransfer";
-
 import RawTransaction from './RawTransaction';
 import AddComment from './AddComment';
 import GetNews from './GetNews';
 import GetComments from "./GetComments";
-
-
 
 declare global {
   interface Window {
