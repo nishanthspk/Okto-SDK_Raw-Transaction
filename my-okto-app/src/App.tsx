@@ -351,33 +351,7 @@ const contractABI = [
       
           
       
-            {/* <div className="mt-4">
-              <input
-                type="text"
-                placeholder="Search News ID"
-                value={newsId}
-                onChange={(e) => setNewsId(e.target.value)}
-                className="w-full p-3 bg-gradient-to-br from-blue-50 to-blue-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-500 shadow-md mb-2"
-              />
-              <button
-                onClick={postComment}
-                className="w-full my-4 py-3 px-4 bg-gradient-to-r from-blue-300 to-blue-600 text-white rounded-full hover:from-blue-500 hover:to-blue-700 transition mb-2 font-bold shadow-md"
-              >
-                Post Comments
-              </button>
-              <button
-                onClick={getNews}
-                className="w-full my-4 py-3 px-4 bg-gradient-to-r from-blue-300 to-blue-600 text-white rounded-full hover:from-gray-300 hover:to-gray-500 transition mb-2 font-bold shadow-md"
-              >
-                Get News
-              </button>
-              <button
-                onClick={getComments}
-                className="w-full my-4 py-3 px-4 bg-gradient-to-r from-blue-300 to-blue-600 text-white rounded-full hover:from-blue-500 hover:to-blue-700 transition mb-2 font-bold shadow-md"
-              >
-                Get Comments
-              </button>
-            </div> */}
+            
       
             {/* {newsPost && (
               <div className="p-4 border border-gray-300 rounded-xl mt-2 bg-gradient-to-br from-white to-blue-100 shadow-md">
