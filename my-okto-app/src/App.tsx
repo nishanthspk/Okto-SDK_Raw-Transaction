@@ -349,12 +349,6 @@ const contractABI = [
             </div>
           </div>
       
-          
-      
-            
-      
-           
-      
           <TokenTransfer />
           <RawTransaction />
           <AddComment />
