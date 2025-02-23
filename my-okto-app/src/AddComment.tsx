@@ -51,7 +51,14 @@ export default function addComments({ }) {
             console.log("Function Data:", functionData);
             console.log("Raw Transaction Params:", rawTxParams);
 
-            const result = await evmRawTransaction(oktoClient, rawTxParams);
+            const result = await evmRawTransaction(oktoClient,  {
+                caip2Id: 'eip155:84532', // Specify target chain
+                transaction: {
+                    from: "0xa4Ba62BA94EE81898aDE0276283BADdDD174C154",
+                    to: contractAddress as '0x${string}',
+                    data: functionData,
+                },
+            });
         }
         catch (error) {
             console.error("Transaction error:", error);
