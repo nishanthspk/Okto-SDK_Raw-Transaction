@@ -8,8 +8,6 @@ import { encodeFunctionData } from 'viem';
 export default function GetNews({ }) {
     const oktoClient = useOkto();
 
-
-
     const getNews = async () => {
         try {
             // 1. Define Contract Interaction
