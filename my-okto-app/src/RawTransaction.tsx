@@ -16,8 +16,6 @@ export const RawTransaction = () => {
   });
 
   const postNews = async () => {
-
-
     try {
 
 
