@@ -7,14 +7,9 @@ import { optimism } from "viem/chains";
 
 export const RawTransaction = () => {
 
-
-
-
   const [newsContent, setNewsContent] = useState("");
   const [newsId, setNewsId] = useState<string>("");
-
   const oktoClient = useOkto();
-
   const client = createPublicClient({
     chain: optimism,
     transport: http(),
