@@ -113,8 +113,6 @@ export const RawTransaction = () => {
       >
         Post News
       </button>
-
-
     </div>
   );
 
