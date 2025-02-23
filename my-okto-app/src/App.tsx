@@ -19,13 +19,7 @@ declare global {
 const App = () => {
   const oktoClient = useOkto();
   const [account, setAccount] = useState<string | null>(null);
-  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
-  const [contract, setContract] = useState<ethers.Contract | null>(null);
-  const [newsId, setNewsId] = useState<string>("");
-  const [newsContent, setNewsContent] = useState<string>("");
-  const [comment, setComment] = useState<string>("");
-  const [newsPost, setNewsPost] = useState<any>(null);
-  const [comments, setComments] = useState<any[]>([]);
+
 
   async function handleGoogleLogin(credentialResponse: any) {
     try {
