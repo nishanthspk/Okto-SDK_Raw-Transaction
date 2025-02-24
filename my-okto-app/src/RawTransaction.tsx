@@ -1,8 +1,7 @@
 import { evmRawTransaction, useOkto } from '@okto_web3/react-sdk';
 import { useState } from 'react';
 import { encodeFunctionData, decodeFunctionData } from 'viem';
-import { createPublicClient, http } from "viem";
-import { optimism } from "viem/chains";
+
 
 
 export const RawTransaction = () => {
@@ -10,16 +9,13 @@ export const RawTransaction = () => {
   const [newsContent, setNewsContent] = useState("");
   const [newsId, setNewsId] = useState<string>("");
   const oktoClient = useOkto();
-  const client = createPublicClient({
-    chain: optimism,
-    transport: http(),
-  });
+
 
   const postNews = async () => {
     try {
       const contractAddress = '0x02B139228Fe4CA03ca1E45df00aBD46D17450AFB'; // Replace with actual contract address
       const functionName = 'postNews'; // Replace with actual function name
-      const functionArgs = ["Hello"];
+      const functionArgs:readonly [string] = ["Hello"];
       const functionData = encodeFunctionData({
         abi: [
 

@@ -12,7 +12,7 @@ export default function addComments({ }) {
             // 1. Define Contract Interaction
             const contractAddress = '0x02B139228Fe4CA03ca1E45df00aBD46D17450AFB'; // Replace with actual contract address
             const functionName = 'addComment'; // Replace with actual function name
-            const functionArgs = [6, "hi"]; // Pass input value as argument
+            const functionArgs: readonly [bigint, string] = [BigInt(6), "hi"];
 
 
             const functionData = encodeFunctionData({

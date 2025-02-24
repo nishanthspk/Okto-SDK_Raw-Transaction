@@ -16,7 +16,7 @@ export default function GetComments({ }) {
             // 1. Define Contract Interaction
             const contractAddress = '0x02B139228Fe4CA03ca1E45df00aBD46D17450AFB'; // Replace with actual contract address
             const functionName = 'getComments'; // Replace with actual function name
-            const functionArgs = [20,"world"]; // Pass input value as argument
+            const functionArgs:readonly [bigint] = [BigInt(20)]; // Pass input value as argument
 
 
             const functionData = encodeFunctionData({
